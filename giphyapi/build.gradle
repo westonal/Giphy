@@ -1,0 +1,30 @@
+apply plugin: 'java-library'
+apply plugin: 'jacoco'
+
+dependencies {
+    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.google.code.gson:gson:$gson_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.fabric8io:mockwebserver:v0.1.1'
+}
+
+/** jacoco code-cov **/
+
+jacoco {
+    toolVersion = '0.8.2'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+/** end jacoco code-cov **/
