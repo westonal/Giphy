@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/trendingFragment">
+
+    <fragment
+        android:id="@+id/trendingFragment"
+        android:name="io.github.westonal.alansgiphysearch.TrendingFragment"
+        android:label="fragment_trending"
+        tools:layout="@layout/fragment_trending" >
+        <action
+            android:id="@+id/action_trendingFragment_to_gifFragment"
+            app:destination="@id/gifFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gifFragment"
+        android:name="io.github.westonal.alansgiphysearch.GifFragment"
+        android:label="fragment_gif"
+        tools:layout="@layout/fragment_gif" />
+</navigation>

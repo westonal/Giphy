@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Alan\'s Giphy Search</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_gif_fragment">Gif fragment</string>
 </resources>
