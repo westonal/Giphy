@@ -9,5 +9,14 @@
         android:id="@+id/trendingFragment"
         android:name="io.github.westonal.alansgiphysearch.TrendingFragment"
         android:label="fragment_trending"
-        tools:layout="@layout/fragment_trending" />
+        tools:layout="@layout/fragment_trending" >
+        <action
+            android:id="@+id/action_trendingFragment_to_gifFragment"
+            app:destination="@id/gifFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gifFragment"
+        android:name="io.github.westonal.alansgiphysearch.GifFragment"
+        android:label="fragment_gif"
+        tools:layout="@layout/fragment_gif" />
 </navigation>
