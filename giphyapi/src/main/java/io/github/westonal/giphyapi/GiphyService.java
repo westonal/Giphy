@@ -3,12 +3,12 @@ package io.github.westonal.giphyapi;
 import io.github.westonal.giphyapi.dto.TrendingResponse;
 import io.reactivex.Single;
 
-class GiphyService {
+public class GiphyService {
 
     private final GiphyApi giphyApi;
     private final String apiKey;
 
-    GiphyService(final GiphyApi giphyApi, final String apiKey) {
+    public GiphyService(final GiphyApi giphyApi, final String apiKey) {
         this.giphyApi = giphyApi;
         this.apiKey = apiKey;
     }
