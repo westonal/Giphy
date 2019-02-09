@@ -2,7 +2,6 @@ package io.github.westonal.alansgiphysearch;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import io.github.westonal.giphyapi.GiphyService;
-import io.github.westonal.giphyapi.dto.TrendingResponse;
-import io.reactivex.functions.Consumer;
+import io.github.westonal.giphyapi.dto.Pagination;
+import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public final class TrendingFragment extends Fragment {
 
     @Inject
     GiphyService giphyService;
 
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     public TrendingFragment() {
     }
 
     @Override
     public void onAttach(Context context) {
-       ((App) context.getApplicationContext()).getAppComponent().inject(this);
+        ((App) context.getApplicationContext()).getAppComponent().inject(this);
         super.onAttach(context);
     }
 
@@ -41,14 +43,12 @@ public final class TrendingFragment extends Fragment {
             }
         });
 
-
-        giphyService.getTrending(12)
-                .subscribe(new Consumer<TrendingResponse>() {
-                    @Override
-                    public void accept(TrendingResponse trendingResponse) {
-                        Log.d("ALAN", "result size: " + trendingResponse.getPagination().getCount());
-                    }
-                });
+        compositeDisposable.add(giphyService.getTrending(12)
+                .doOnError(Timber::e)
+                .subscribe(trendingResponse -> {
+                    final Pagination pagination = trendingResponse.getPagination();
+                    Timber.d("Paging info %d/%d/%d ", pagination.getCount(), pagination.getOffset(), pagination.getTotalCount());
+                }));
 
         return view;
     }

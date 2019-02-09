@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.github.westonal.alansgiphysearch.BuildConfig;
+import io.github.westonal.alansgiphysearch.network.ApiInterceptor;
+import io.github.westonal.alansgiphysearch.network.UnzippingInterceptor;
 import io.github.westonal.giphyapi.GiphyApi;
 import io.github.westonal.giphyapi.GiphyService;
 import io.reactivex.schedulers.Schedulers;
@@ -20,7 +22,12 @@ public final class ServiceModule {
     @Provides
     @Singleton
     static OkHttpClient provideOkHttpClient() {
-        return new OkHttpClient();
+        final OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            okHttpClient.addNetworkInterceptor(new ApiInterceptor());
+            okHttpClient.addNetworkInterceptor(new UnzippingInterceptor());
+        }
+        return okHttpClient.build();
     }
 
     @Provides

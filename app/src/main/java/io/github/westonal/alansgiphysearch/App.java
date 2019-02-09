@@ -5,6 +5,7 @@ import android.app.Application;
 import io.github.westonal.alansgiphysearch.dagger.AppComponent;
 import io.github.westonal.alansgiphysearch.dagger.DaggerAppComponent;
 import io.github.westonal.alansgiphysearch.dagger.ServiceModule;
+import timber.log.Timber;
 
 public final class App extends Application {
 
@@ -13,6 +14,9 @@ public final class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         appComponent = createMyComponent();
     }
 
