@@ -47,7 +47,7 @@ public final class TrendingFragment extends Fragment {
                 .doOnError(Timber::e)
                 .subscribe(trendingResponse -> {
                     final Pagination pagination = trendingResponse.getPagination();
-                    Timber.d("Paging info %d/%d/%d ", pagination.getCount(), pagination.getOffset(), pagination.getTotalCount());
+                    Timber.d("Paging info. Count: %d, Offset: %d, Total:%d", pagination.getCount(), pagination.getOffset(), pagination.getTotalCount());
                 }));
 
         return view;

@@ -17,17 +17,17 @@ public final class App extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        appComponent = createMyComponent();
-    }
-
-    private AppComponent createMyComponent() {
-        return DaggerAppComponent
-                .builder()
-                .serviceModule(new ServiceModule())
-                .build();
+        appComponent = createAppComponent();
     }
 
     public AppComponent getAppComponent() {
         return appComponent;
+    }
+
+    private static AppComponent createAppComponent() {
+        return DaggerAppComponent
+                .builder()
+                .serviceModule(new ServiceModule())
+                .build();
     }
 }
