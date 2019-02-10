@@ -8,7 +8,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okio.Buffer;
 import timber.log.Timber;
 
@@ -36,10 +35,8 @@ public final class ApiInterceptor implements Interceptor {
                 (endTime - startTime) / 1e6d,
                 response.headers());
 
-        final ResponseBody body = response.body();
-        final String bodyString = body == null ? "\n<No Body>\n" : body.string();
 
-        final String responseMessage = "Response: " + response.code() + "\n" + responseLog + "\n" + bodyString + "\n";
+        final String responseMessage = "Response: " + response.code() + "\n" + responseLog + "\n";
         if (response.code() == 200) {
             Timber.v(responseMessage);
         } else {
@@ -47,11 +44,7 @@ public final class ApiInterceptor implements Interceptor {
         }
         Timber.v("-------------------------------------------------------------------------------");
 
-        if (body == null) return response;
-
-        return response.newBuilder()
-                .body(ResponseBody.create(body.contentType(), bodyString))
-                .build();
+        return response;
     }
 
     @NonNull

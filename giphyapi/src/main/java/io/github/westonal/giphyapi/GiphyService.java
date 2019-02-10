@@ -1,7 +1,7 @@
 package io.github.westonal.giphyapi;
 
 import io.github.westonal.giphyapi.dto.TrendingResponse;
-import io.reactivex.Single;
+import retrofit2.Call;
 
 public final class GiphyService {
 
@@ -13,7 +13,7 @@ public final class GiphyService {
         this.apiKey = apiKey;
     }
 
-    public Single<TrendingResponse> getTrending(final int limit, final int offset) {
+    public Call<TrendingResponse> getTrending(final int limit, final int offset) {
         return giphyApi.trending(apiKey, limit, offset);
     }
 }

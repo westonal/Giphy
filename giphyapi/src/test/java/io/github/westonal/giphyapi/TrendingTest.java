@@ -4,14 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import java.io.IOException;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.github.westonal.giphyapi.dto.Pagination;
 import io.github.westonal.giphyapi.dto.TrendingResponse;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static io.github.westonal.giphyapi.ResourceLoader.resource;
@@ -32,7 +31,6 @@ public final class TrendingTest {
         retrofit = new Retrofit.Builder()
                 .baseUrl(server.url("/v1/gifs/"))
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
     }
@@ -59,12 +57,13 @@ public final class TrendingTest {
 
     private TrendingResponse getTrending(final int limit, final int offset) {
         final GiphyApi giphyApi = retrofit.create(GiphyApi.class);
-        final List<TrendingResponse> key = new GiphyService(giphyApi, "key")
-                .getTrending(limit, offset)
-                .test()
-                .assertComplete()
-                .values();
-        assertEquals(1, key.size());
-        return key.get(0);
+        try {
+            return new GiphyService(giphyApi, "key")
+                    .getTrending(limit, offset)
+                    .execute()
+                    .body();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

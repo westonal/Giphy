@@ -10,10 +10,8 @@ import io.github.westonal.alansgiphysearch.network.ApiInterceptor;
 import io.github.westonal.alansgiphysearch.network.UnzippingInterceptor;
 import io.github.westonal.giphyapi.GiphyApi;
 import io.github.westonal.giphyapi.GiphyService;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -37,7 +35,6 @@ public final class ServiceModule {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.GIPHY_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(okHttpClient)
                 .build();
     }
