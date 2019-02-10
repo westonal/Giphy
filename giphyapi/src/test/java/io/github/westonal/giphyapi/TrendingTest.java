@@ -47,17 +47,20 @@ public final class TrendingTest {
         server.expect().withPath("/v1/gifs/trending?api_key=key&limit=25&offset=75")
                 .andReturn(200, resource("trendingResponse.json"))
                 .once();
-        final TrendingResponse trendingResponse = getTrending(75);
+        final TrendingResponse trendingResponse = getTrending(25, 75);
         final Pagination pagination = trendingResponse.getPagination();
         assertEquals(63621, pagination.getTotalCount());
         assertEquals(25, pagination.getCount());
         assertEquals(75, pagination.getOffset());
+        assertEquals(3, trendingResponse.getGifs().size());
+        assertEquals("https://media1.giphy.com/media/NsCSaZBhPkjrHeztJi/200w.gif",
+                trendingResponse.getGifs().get(0).getImages().getFixedWidth().getUrl());
     }
 
-    private TrendingResponse getTrending(final int offset) {
+    private TrendingResponse getTrending(final int limit, final int offset) {
         final GiphyApi giphyApi = retrofit.create(GiphyApi.class);
         final List<TrendingResponse> key = new GiphyService(giphyApi, "key")
-                .getTrending(offset)
+                .getTrending(limit, offset)
                 .test()
                 .assertComplete()
                 .values();

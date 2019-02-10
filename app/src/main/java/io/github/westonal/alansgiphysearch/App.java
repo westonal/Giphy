@@ -4,7 +4,6 @@ import android.app.Application;
 
 import io.github.westonal.alansgiphysearch.dagger.AppComponent;
 import io.github.westonal.alansgiphysearch.dagger.DaggerAppComponent;
-import io.github.westonal.alansgiphysearch.dagger.ServiceModule;
 import timber.log.Timber;
 
 public final class App extends Application {
@@ -27,7 +26,6 @@ public final class App extends Application {
     private static AppComponent createAppComponent() {
         return DaggerAppComponent
                 .builder()
-                .serviceModule(new ServiceModule())
                 .build();
     }
 }
