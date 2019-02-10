@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".GifFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/image_view_gif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_gif_fragment" />
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_launcher_background" />
 
 </FrameLayout>

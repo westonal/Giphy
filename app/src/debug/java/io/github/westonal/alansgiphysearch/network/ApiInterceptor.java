@@ -68,10 +68,8 @@ public final class ApiInterceptor implements Interceptor {
         return requestLog;
     }
 
-    @SuppressWarnings("TryFinallyCanBeTryWithResources")
     private String requestBodyToString(final RequestBody request) {
-        final Buffer buffer = new Buffer();
-        try {
+        try (Buffer buffer = new Buffer()) {
             if (request != null) {
                 request.writeTo(buffer);
                 return buffer.readUtf8();
@@ -80,8 +78,6 @@ public final class ApiInterceptor implements Interceptor {
             }
         } catch (final IOException e) {
             return "IOException reading request body";
-        } finally {
-            buffer.close();
         }
     }
 }
