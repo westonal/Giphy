@@ -32,6 +32,7 @@ public final class GifListFragment extends Fragment {
 
     private GifListViewModel gifListViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Snackbar snackbar;
 
     @Override
     public void onAttach(Context context) {
@@ -44,33 +45,45 @@ public final class GifListFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_gif_list, container, false);
 
-        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view_gifs);
+        gifListViewModel = getViewModel();
 
+        setupRecyclerView(view.findViewById(R.id.recycler_view_gifs), gifListViewModel);
+
+        setupSearch(view.findViewById(R.id.edit_text_search), gifListViewModel);
+
+        setupSwipeToRefresh(view.findViewById(R.id.swipe_refresh), gifListViewModel);
+
+        return view;
+    }
+
+    @NonNull
+    private GifListViewModel getViewModel() {
+        return ViewModelProviders.of(this, viewModelFactory)
+                .get(GifListViewModel.class);
+    }
+
+    private void setupRecyclerView(final RecyclerView recyclerView, final GifListViewModel gifListViewModel) {
         final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
         final GifPagedListAdapter adapter = new GifPagedListAdapter();
 
-        gifListViewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(GifListViewModel.class);
         gifListViewModel.getGifs().observe(this, adapter::submitList);
         gifListViewModel.getNetworkState().observe(this, this::networkStateChange);
+        recyclerView.setAdapter(adapter);
+    }
 
-        final TextView textView = view.findViewById(R.id.edit_text_search);
+    private static void setupSearch(final TextView textView, final GifListViewModel gifListViewModel) {
         textView.addTextChangedListener(new DebouncedTextWatcher((searchTerm) -> {
             Timber.d("New search term (debounced) \"%s\"", searchTerm);
             gifListViewModel.setSearchTerm(searchTerm);
         }, 500L));
-
-        recyclerView.setAdapter(adapter);
-
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(() -> gifListViewModel.refresh());
-
-        return view;
     }
 
-    private Snackbar snackbar;
+    private void setupSwipeToRefresh(final SwipeRefreshLayout swipeRefreshLayout, final GifListViewModel gifListViewModel) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
+        swipeRefreshLayout.setOnRefreshListener(gifListViewModel::refresh);
+    }
 
     private void networkStateChange(NetworkState networkState) {
         Timber.d("Network state %s", networkState);
