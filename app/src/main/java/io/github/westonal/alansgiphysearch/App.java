@@ -6,7 +6,7 @@ import io.github.westonal.alansgiphysearch.dagger.AppComponent;
 import io.github.westonal.alansgiphysearch.dagger.DaggerAppComponent;
 import timber.log.Timber;
 
-public final class App extends Application {
+final class App extends Application {
 
     private AppComponent appComponent;
 

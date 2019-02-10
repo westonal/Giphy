@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public final class ServiceModule {
+final class ServiceModule {
 
     @Provides
     @Singleton

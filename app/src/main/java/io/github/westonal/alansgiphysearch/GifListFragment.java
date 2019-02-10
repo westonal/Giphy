@@ -21,15 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.github.westonal.alansgiphysearch.gifdata.GifListViewModel;
 import io.github.westonal.alansgiphysearch.gifdata.GifPagedListAdapter;
 import io.github.westonal.alansgiphysearch.gifdata.NetworkState;
-import io.github.westonal.giphyapi.GiphyService;
 import timber.log.Timber;
 
 public final class GifListFragment extends Fragment {
 
     @Inject
-    GiphyService giphyService;
-
-    @Inject
+    @SuppressWarnings("WeakerAccess")
     ViewModelProvider.Factory viewModelFactory;
 
     private GifListViewModel gifListViewModel;
