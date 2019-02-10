@@ -74,6 +74,16 @@ public final class GiphyServiceTest {
                 paginationResponse.getGifs().get(1).getImages().getFixedWidth().getUrl());
     }
 
+    @Test
+    public void canGetOriginal() {
+        server.expect().withPath("/v1/gifs/trending?api_key=key&limit=50&offset=100")
+                .andReturn(200, resource("paginationResponse.json"))
+                .once();
+        final PaginationResponse paginationResponse = getTrending(50, 100);
+        assertEquals("https://media2.giphy.com/media/26DOMeaD2gdGE44LK/giphy.gif",
+                paginationResponse.getGifs().get(2).getImages().getOriginal().getUrl());
+    }
+
     private PaginationResponse getTrending(final int limit, final int offset) {
         final GiphyApi giphyApi = retrofit.create(GiphyApi.class);
         try {
