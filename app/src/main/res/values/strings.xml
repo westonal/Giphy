@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Alan\'s Giphy Browser</string>
 
+    <string name="search">Search</string>
+
     <string name="loading_failed">Loading failed</string>
     <string name="retry">Retry</string>
 </resources>

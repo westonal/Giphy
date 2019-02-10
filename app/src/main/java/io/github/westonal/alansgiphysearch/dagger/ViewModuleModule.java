@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import io.github.westonal.alansgiphysearch.trending.TrendingViewModel;
+import io.github.westonal.alansgiphysearch.gifdata.GifListViewModel;
 
 /**
  * Adapted from https://proandroiddev.com/viewmodel-with-dagger2-architecture-components-2e06f06c9455
@@ -14,10 +14,10 @@ import io.github.westonal.alansgiphysearch.trending.TrendingViewModel;
 abstract class ViewModuleModule {
 
     @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
+    abstract ViewModelProvider.Factory bindViewModelFactory(final ViewModelFactory factory);
 
     @Binds
     @IntoMap
-    @ViewModelKey(TrendingViewModel.class)
-    abstract ViewModel postTrendingViewModel(TrendingViewModel trendingViewModel);
+    @ViewModelKey(GifListViewModel.class)
+    abstract ViewModel postGifListViewModel(final GifListViewModel gifListViewModel);
 }

@@ -3,7 +3,7 @@ package io.github.westonal.alansgiphysearch.dagger;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.github.westonal.alansgiphysearch.TrendingFragment;
+import io.github.westonal.alansgiphysearch.GifListFragment;
 
 @Singleton
 @Component(modules = {
@@ -12,5 +12,5 @@ import io.github.westonal.alansgiphysearch.TrendingFragment;
 })
 public interface AppComponent {
 
-    void inject(TrendingFragment trendingFragment);
+    void inject(GifListFragment gifListFragment);
 }

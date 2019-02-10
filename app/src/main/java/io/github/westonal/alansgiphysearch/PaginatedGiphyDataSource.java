@@ -1,35 +1,33 @@
-package io.github.westonal.alansgiphysearch.trending;
+package io.github.westonal.alansgiphysearch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
-import io.github.westonal.giphyapi.GiphyService;
+import io.github.westonal.alansgiphysearch.gifdata.NetworkState;
 import io.github.westonal.giphyapi.dto.Gif;
-import io.github.westonal.giphyapi.dto.TrendingResponse;
+import io.github.westonal.giphyapi.dto.PaginationResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
-final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
-
-    private final GiphyService giphyService;
-
-    TrendingDataSource(GiphyService giphyService) {
-        this.giphyService = giphyService;
-    }
+public abstract class PaginatedGiphyDataSource extends PageKeyedDataSource<Integer, Gif> {
 
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
 
     private Runnable retry;
 
-    MutableLiveData<NetworkState> getNetworkState() {
+    protected abstract Call<PaginationResponse> loadInitial(@NonNull LoadInitialParams<Integer> params);
+
+    protected abstract Call<PaginationResponse> loadAfter(@NonNull LoadParams<Integer> params);
+
+    public MutableLiveData<NetworkState> getNetworkState() {
         return networkState;
     }
 
     @Nullable
-    synchronized Runnable getRetry() {
+    public synchronized Runnable getRetry() {
         return retry;
     }
 
@@ -37,11 +35,11 @@ final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Gif> callback) {
         Timber.d("getTrending loadInitial %d/%d", params.requestedLoadSize, 0);
         loading();
-        giphyService.getTrending(params.requestedLoadSize, 0)
-                .enqueue(new Callback<TrendingResponse>() {
+        loadInitial(params)
+                .enqueue(new Callback<PaginationResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<TrendingResponse> call, @NonNull Response<TrendingResponse> response) {
-                        final TrendingResponse trending = response.body();
+                    public void onResponse(@NonNull Call<PaginationResponse> call, @NonNull Response<PaginationResponse> response) {
+                        final PaginationResponse trending = response.body();
                         if (!response.isSuccessful() || trending == null) {
                             Timber.e(response.message());
                             failed(() -> loadInitial(params, callback));
@@ -59,7 +57,7 @@ final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
 
                     @Override
                     public void onFailure
-                            (@NonNull Call<TrendingResponse> call, @NonNull Throwable t) {
+                            (@NonNull Call<PaginationResponse> call, @NonNull Throwable t) {
                         Timber.e(t);
                         failed(() -> loadInitial(params, callback));
                     }
@@ -70,11 +68,11 @@ final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Gif> callback) {
         Timber.d("getTrending loadAfter %d/%d", params.requestedLoadSize, params.key);
         loading();
-        giphyService.getTrending(params.requestedLoadSize, params.key)
-                .enqueue(new Callback<TrendingResponse>() {
+        loadAfter(params)
+                .enqueue(new Callback<PaginationResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<TrendingResponse> call, @NonNull Response<TrendingResponse> response) {
-                        final TrendingResponse trending = response.body();
+                    public void onResponse(@NonNull Call<PaginationResponse> call, @NonNull Response<PaginationResponse> response) {
+                        final PaginationResponse trending = response.body();
                         if (!response.isSuccessful() || trending == null) {
                             Timber.e(response.message());
                             failed(() -> loadAfter(params, callback));
@@ -88,7 +86,7 @@ final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<TrendingResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<PaginationResponse> call, @NonNull Throwable t) {
                         Timber.e(t);
                         failed(() -> loadAfter(params, callback));
                     }
@@ -96,8 +94,7 @@ final class TrendingDataSource extends PageKeyedDataSource<Integer, Gif> {
     }
 
     @Override
-    public void loadBefore
-            (@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Gif> callback) {
+    public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Gif> callback) {
         throw new RuntimeException("Do not expect load before, we only append");
     }
 

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -17,13 +18,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.github.westonal.alansgiphysearch.trending.GifPagedListAdapter;
-import io.github.westonal.alansgiphysearch.trending.NetworkState;
-import io.github.westonal.alansgiphysearch.trending.TrendingViewModel;
+import io.github.westonal.alansgiphysearch.gifdata.GifListViewModel;
+import io.github.westonal.alansgiphysearch.gifdata.GifPagedListAdapter;
+import io.github.westonal.alansgiphysearch.gifdata.NetworkState;
 import io.github.westonal.giphyapi.GiphyService;
 import timber.log.Timber;
 
-public final class TrendingFragment extends Fragment {
+public final class GifListFragment extends Fragment {
 
     @Inject
     GiphyService giphyService;
@@ -31,7 +32,7 @@ public final class TrendingFragment extends Fragment {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private TrendingViewModel trendingViewModel;
+    private GifListViewModel gifListViewModel;
 
     @Override
     public void onAttach(Context context) {
@@ -42,19 +43,25 @@ public final class TrendingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_trending, container, false);
+        final View view = inflater.inflate(R.layout.fragment_gif_list, container, false);
 
-        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view_trending_gifs);
+        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view_gifs);
 
         final RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
         final GifPagedListAdapter adapter = new GifPagedListAdapter();
 
-        trendingViewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(TrendingViewModel.class);
-        trendingViewModel.getGifs().observe(this, adapter::submitList);
-        trendingViewModel.getNetworkState().observe(this, this::networkStateChange);
+        gifListViewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(GifListViewModel.class);
+        gifListViewModel.getGifs().observe(this, adapter::submitList);
+        gifListViewModel.getNetworkState().observe(this, this::networkStateChange);
+
+        final TextView textView = view.findViewById(R.id.edit_text_search);
+        textView.addTextChangedListener(new DebouncedTextWatcher((searchTerm) -> {
+            Timber.d("New search term (debounced) \"%s\"", searchTerm);
+            gifListViewModel.setSearchTerm(searchTerm);
+        }, 500L));
 
         recyclerView.setAdapter(adapter);
 
@@ -70,7 +77,7 @@ public final class TrendingFragment extends Fragment {
                     .make(getActivity().findViewById(R.id.coordinator_layout),
                             getString(R.string.loading_failed),
                             Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.retry), view -> trendingViewModel.retry(new Handler()));
+                    .setAction(getString(R.string.retry), view -> gifListViewModel.retry(new Handler()));
             snackbar.show();
         } else {
             if (snackbar != null) snackbar.dismiss();

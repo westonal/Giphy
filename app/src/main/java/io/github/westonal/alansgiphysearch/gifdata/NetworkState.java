@@ -1,4 +1,4 @@
-package io.github.westonal.alansgiphysearch.trending;
+package io.github.westonal.alansgiphysearch.gifdata;
 
 public enum NetworkState {
     INITIAL,

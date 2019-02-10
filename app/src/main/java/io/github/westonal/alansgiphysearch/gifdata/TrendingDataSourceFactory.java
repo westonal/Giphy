@@ -1,22 +1,18 @@
-package io.github.westonal.alansgiphysearch.trending;
+package io.github.westonal.alansgiphysearch.gifdata;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import io.github.westonal.giphyapi.GiphyService;
 import io.github.westonal.giphyapi.dto.Gif;
 
-final class GifDataSourceFactory extends DataSource.Factory<Integer, Gif> {
+final class TrendingDataSourceFactory extends GifDataSourceFactory {
 
     private final GiphyService giphyService;
 
-    private final MutableLiveData<TrendingDataSource> lastCreated = new MutableLiveData<>();
-
     @Inject
-    GifDataSourceFactory(final GiphyService giphyService) {
+    TrendingDataSourceFactory(final GiphyService giphyService) {
         this.giphyService = giphyService;
     }
 
@@ -26,9 +22,5 @@ final class GifDataSourceFactory extends DataSource.Factory<Integer, Gif> {
         final TrendingDataSource dataSource = new TrendingDataSource(giphyService);
         lastCreated.postValue(dataSource);
         return dataSource;
-    }
-
-    LiveData<TrendingDataSource> getLastCreatedDataSource() {
-        return lastCreated;
     }
 }
