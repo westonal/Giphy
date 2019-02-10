@@ -1,6 +1,6 @@
 package io.github.westonal.giphyapi;
 
-import io.github.westonal.giphyapi.dto.TrendingResponse;
+import io.github.westonal.giphyapi.dto.PaginationResponse;
 import retrofit2.Call;
 
 public final class GiphyService {
@@ -13,7 +13,11 @@ public final class GiphyService {
         this.apiKey = apiKey;
     }
 
-    public Call<TrendingResponse> getTrending(final int limit, final int offset) {
+    public Call<PaginationResponse> getTrending(final int limit, final int offset) {
         return giphyApi.trending(apiKey, limit, offset);
+    }
+
+    public Call<PaginationResponse> getSearch(final String query, final int limit, final int offset) {
+        return giphyApi.search(apiKey, query, limit, offset);
     }
 }

@@ -1,4 +1,4 @@
-package io.github.westonal.alansgiphysearch.trending;
+package io.github.westonal.alansgiphysearch.gifdata;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,8 @@ import androidx.navigation.Navigation;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import io.github.westonal.alansgiphysearch.GifListFragmentDirections;
 import io.github.westonal.alansgiphysearch.R;
-import io.github.westonal.alansgiphysearch.TrendingFragmentDirections;
 import io.github.westonal.giphyapi.dto.Gif;
 
 public final class GifPagedListAdapter extends PagedListAdapter<Gif, GifPagedListAdapter.GifViewHolder> {
@@ -40,12 +40,11 @@ public final class GifPagedListAdapter extends PagedListAdapter<Gif, GifPagedLis
 
         holder.imageView.setOnClickListener(view ->
                 Navigation.findNavController(view)
-                        .navigate(TrendingFragmentDirections.actionTrendingFragmentToGifFragment(url))
+                        .navigate(GifListFragmentDirections.actionViewGif(url))
         );
     }
 
     static class GifViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         private ImageView imageView;
 
         private GifViewHolder(final View root) {
@@ -65,5 +64,12 @@ public final class GifPagedListAdapter extends PagedListAdapter<Gif, GifPagedLis
         public boolean areContentsTheSame(@NonNull Gif oldItem, @NonNull Gif newItem) {
             return oldItem.getId().equals(newItem.getId());
         }
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull GifViewHolder holder) {
+        holder.imageView.setOnClickListener(null);
+        holder.imageView.setImageDrawable(null);
+        super.onViewRecycled(holder);
     }
 }
