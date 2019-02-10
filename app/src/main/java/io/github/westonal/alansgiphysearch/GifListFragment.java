@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.github.westonal.alansgiphysearch.gifdata.GifListViewModel;
 import io.github.westonal.alansgiphysearch.gifdata.GifPagedListAdapter;
 import io.github.westonal.alansgiphysearch.gifdata.NetworkState;
@@ -30,6 +31,7 @@ public final class GifListFragment extends Fragment {
     ViewModelProvider.Factory viewModelFactory;
 
     private GifListViewModel gifListViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onAttach(Context context) {
@@ -62,6 +64,9 @@ public final class GifListFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> gifListViewModel.refresh());
+
         return view;
     }
 
@@ -78,6 +83,7 @@ public final class GifListFragment extends Fragment {
             snackbar.show();
         } else {
             if (snackbar != null) snackbar.dismiss();
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 }

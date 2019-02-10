@@ -82,4 +82,8 @@ public final class GifListViewModel extends ViewModel {
             return new SearchDataSourceFactory(giphyService, searchTerm);
         }
     }
+
+    public void refresh() {
+        updateDataSource(searchTerm);
+    }
 }
