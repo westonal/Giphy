@@ -14,13 +14,13 @@ You will need to insert your API key(s) in to `local.properties`:
 Features
 ==
 
-- Androidx Navigation
-- Androidx Paging
-- Androidx RecyclerView
-- Androidx LiveData
-- Androidx ViewModel
-- Androidx CardView
-- Androidx ConstraintLayout
+- Navigation
+- Paging
+- RecyclerView
+- LiveData
+- ViewModel
+- CardView
+- ConstraintLayout
 - Swipe To Refresh
 - Retry errors via SnackBar
 - Glide
