@@ -11,16 +11,18 @@ You will need to insert your API key(s) in to `local.properties`:
     giphy.debug.api.token=
     giphy.release.api.token=
 
-Uses
+Features
 ==
 
-- Androidx Navigation
-- Androidx Paging
-- Androidx RecyclerView
-- Androidx LiveData
-- Androidx ViewModel
-- Androidx CardView
-- Androidx ConstraintLayout
+- Navigation
+- Paging
+- RecyclerView
+- LiveData
+- ViewModel
+- CardView
+- ConstraintLayout
+- Swipe To Refresh
+- Retry errors via SnackBar
 - Glide
 - Dagger 2
 - Retrofit 2
