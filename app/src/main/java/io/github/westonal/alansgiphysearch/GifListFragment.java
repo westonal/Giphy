@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import io.github.westonal.alansgiphysearch.gifdata.GifListViewModel;
 import io.github.westonal.alansgiphysearch.gifdata.GifPagedListAdapter;
 import io.github.westonal.alansgiphysearch.gifdata.NetworkState;
@@ -44,7 +44,7 @@ public final class GifListFragment extends Fragment {
 
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view_gifs);
 
-        final RecyclerView.LayoutManager layoutManager = new GridLayoutManager(view.getContext(), 2);
+        final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
         final GifPagedListAdapter adapter = new GifPagedListAdapter();

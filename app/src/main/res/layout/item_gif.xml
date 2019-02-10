@@ -8,16 +8,17 @@
     <ImageView
         android:id="@+id/image_view_gif"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
         tools:ignore="ContentDescription"
         tools:src="@drawable/ic_launcher_background" />
 
     <RelativeLayout
         android:id="@+id/progress"
-        android:minHeight="192dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:minHeight="92dp">
 
         <ProgressBar
             android:layout_width="32dp"
