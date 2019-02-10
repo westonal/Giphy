@@ -51,6 +51,8 @@ public final class GiphyServiceTest {
         assertEquals(25, pagination.getCount());
         assertEquals(75, pagination.getOffset());
         assertEquals(3, paginationResponse.getGifs().size());
+        assertEquals("NsCSaZBhPkjrHeztJi",
+                paginationResponse.getGifs().get(0).getId());
         assertEquals("https://media1.giphy.com/media/NsCSaZBhPkjrHeztJi/200w.gif",
                 paginationResponse.getGifs().get(0).getImages().getFixedWidth().getUrl());
     }
@@ -66,8 +68,10 @@ public final class GiphyServiceTest {
         assertEquals(25, pagination.getCount());
         assertEquals(75, pagination.getOffset());
         assertEquals(3, paginationResponse.getGifs().size());
-        assertEquals("https://media1.giphy.com/media/NsCSaZBhPkjrHeztJi/200w.gif",
-                paginationResponse.getGifs().get(0).getImages().getFixedWidth().getUrl());
+        assertEquals("3osxYdXvsGw6wT5lIY",
+                paginationResponse.getGifs().get(1).getId());
+        assertEquals("https://media3.giphy.com/media/3osxYdXvsGw6wT5lIY/200w.gif",
+                paginationResponse.getGifs().get(1).getImages().getFixedWidth().getUrl());
     }
 
     private PaginationResponse getTrending(final int limit, final int offset) {

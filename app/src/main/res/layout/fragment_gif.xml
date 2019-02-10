@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_view_gif"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GifFragment">
-
-    <ImageView
-        android:id="@+id/image_view_gif"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/ic_launcher_background" />
-
-</FrameLayout>
+    android:layout_margin="@dimen/standard_margin"
+    tools:ignore="ContentDescription"
+    tools:src="@drawable/ic_launcher_background" />

@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 public abstract class PaginatedGiphyDataSource extends PageKeyedDataSource<Integer, Gif> {
 
-    private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
+    private final MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
 
     private Runnable retry;
 

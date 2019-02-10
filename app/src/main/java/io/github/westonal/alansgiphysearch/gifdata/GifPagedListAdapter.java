@@ -45,7 +45,7 @@ public final class GifPagedListAdapter extends PagedListAdapter<Gif, GifPagedLis
     }
 
     static class GifViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+        private final ImageView imageView;
 
         private GifViewHolder(final View root) {
             super(root);
